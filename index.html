@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para ti</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(165deg, #0c0c14 0%, #151525 35%, #1c1a2e 70%, #1a1625 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 16px;
+      color: #e8e8e8;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 20%, rgba(180, 150, 255, 0.08) 0%, transparent 40%),
+                  radial-gradient(circle at 70% 80%, rgba(232, 213, 183, 0.06) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 28px;
+      padding: 40px 28px 36px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .heart {
+      font-size: 22px;
+      margin-bottom: 12px;
+      opacity: 0.85;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      background: linear-gradient(105deg, #e8d5b7 0%, #d4c4ff 50%, #c9b8ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .subtitle {
+      font-size: 13.5px;
+      color: #a09bb8;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 196, 255, 0.5), transparent);
+      margin: 18px auto 0;
+    }
+
+    .song-list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .song-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      padding: 15px 16px;
+      transition: all 0.35s ease;
+    }
+
+    .song-item:hover {
+      background: rgba(212, 196, 255, 0.06);
+      border-color: rgba(212, 196, 255, 0.18);
+      transform: translateY(-3px);
+    }
+
+    .song-item.playing {
+      background: rgba(212, 196, 255, 0.09);
+      border-color: rgba(212, 196, 255, 0.28);
+    }
+
+    .play-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(145deg, #d4c4ff, #b8a0f0);
+      color: #1a1625;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 18px rgba(184, 160, 240, 0.35);
+    }
+
+    .play-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .play-btn.playing {
+      background: linear-gradient(145deg, #e8d5b7, #d4c4ff);
+    }
+
+    .song-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .song-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: #f2f0f8;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .song-artist {
+      font-size: 12px;
+      color: #8a85a5;
+    }
+
+    .now-playing {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 12.5px;
+      color: #7a7595;
+      min-height: 20px;
+    }
+
+    .now-playing.active {
+      color: #c9b8ff;
+    }
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 11px;
+      color: #5a5675;
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        padding: 32px 20px 28px;
+      }
+      h1 {
+        font-size: 28px;
+      }
+      .play-btn {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="heart">♡</div>
+      <h1>Para ti</h1>
+      <p class="subtitle">Hay canciones que parecen<br>haber sido escritas para nosotros</p>
+      <div class="divider"></div>
+    </div>
+
+    <div class="song-list">
+
+      <!-- CANCIÓN 1 -->
+      <div class="song-item" id="song1">
+        <button class="play-btn" onclick="playSong(1)">▶</button>
+        <div class="song-info">
+          <div class="song-title">La Mejor de Todas</div>
+          <div class="song-artist">Banda el recodo</div>
+        </div>
+        <audio id="audio1" src="songs/cancion1.mp3" preload="none"></audio>
+      </div>
+
+      <!-- CANCIÓN 2 -->
+      <div class="song-item" id="song2">
+        <button class="play-btn" onclick="playSong(2)">▶</button>
+        <div class="song-info">
+          <div class="song-title">Millonario de amor</div>
+          <div class="song-artist">Sergio Vega</div>
+        </div>
+        <audio id="audio2" src="songs/cancion2.mp3" preload="none"></audio>
+      </div>
+
+      <!-- CANCIÓN 3 -->
+      <div class="song-item" id="song3">
+        <button class="play-btn" onclick="playSong(3)">▶</button>
+        <div class="song-info">
+          <div class="song-title">Mary es mi amor</div>
+          <div class="song-artist">Leo Dan</div>
+        </div>
+        <audio id="audio3" src="songs/cancion3.mp3" preload="none"></audio>
+      </div>
+
+      <!-- CANCIÓN 4 -->
+      <div class="song-item" id="song4">
+        <button class="play-btn" onclick="playSong(4)">▶</button>
+        <div class="song-info">
+          <div class="song-title">Piensalo</div>
+          <div class="song-artist">Banda MS</div>
+        </div>
+        <audio id="audio4" src="songs/cancion4.mp3" preload="none"></audio>
+      </div>
+
+      <!-- CANCIÓN 5 -->
+      <div class="song-item" id="song5">
+        <button class="play-btn" onclick="playSong(5)">▶</button>
+        <div class="song-info">
+          <div class="song-title">Mas alla del sol</div>
+          <div class="song-artist">Joan Sebastian</div>
+        </div>
+        <audio id="audio5" src="songs/cancion5.mp3" preload="none"></audio>
+      </div>
+
+    </div>
+
+    <div class="now-playing" id="nowPlaying"></div>
+    <div class="footer">con cariño</div>
+  </div>
+
+  <script>
+    let current = null;
+
+    function playSong(num) {
+      const audio = document.getElementById('audio' + num);
+      const btn = document.querySelector(`#song${num} .play-btn`);
+      const item = document.getElementById('song' + num);
+      const nowPlaying = document.getElementById('nowPlaying');
+
+      // Si ya está sonando esta canción → pausar
+      if (current === num && !audio.paused) {
+        audio.pause();
+        btn.textContent = '▶';
+        btn.classList.remove('playing');
+        item.classList.remove('playing');
+        nowPlaying.textContent = '';
+        nowPlaying.classList.remove('active');
+        current = null;
+        return;
+      }
+
+      // Pausar todas las demás
+      for (let i = 1; i <= 5; i++) {
+        const a = document.getElementById('audio' + i);
+        const b = document.querySelector(`#song${i} .play-btn`);
+        const s = document.getElementById('song' + i);
+        a.pause();
+        a.currentTime = 0;
+        b.textContent = '▶';
+        b.classList.remove('playing');
+        s.classList.remove('playing');
+      }
+
+      // Reproducir la elegida
+      audio.play();
+      btn.textContent = '❚❚';
+      btn.classList.add('playing');
+      item.classList.add('playing');
+      current = num;
+
+      const title = item.querySelector('.song-title').textContent;
+      nowPlaying.textContent = '♪  ' + title;
+      nowPlaying.classList.add('active');
+
+      audio.onended = function() {
+        btn.textContent = '▶';
+        btn.classList.remove('playing');
+        item.classList.remove('playing');
+        nowPlaying.textContent = '';
+        current = null;
+      };
+    }
+  </script>
+</body>
+</html>
